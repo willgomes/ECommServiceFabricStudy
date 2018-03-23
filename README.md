@@ -1,3 +1,3 @@
 # ECommServiceFabricStudy
 
-4Fun with Service Fabric. :)
+4Fun with Azure Service Fabric. :)
