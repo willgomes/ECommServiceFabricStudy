@@ -11,19 +11,19 @@ using Microsoft.ServiceFabric.Services.Remoting.V2.FabricTransport.Client;
 
 namespace EComm.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class ProductsController : Controller
+    [Produces("application/json")]
+    [Route("api/Product")]
+    public class ProductController : Controller
     {
-
         private readonly IProductCatalogService _productCatalogService;
 
-        public ProductsController()
+        public ProductController()
         {
             ServiceProxyFactory proxyFactory = new ServiceProxyFactory(c => new FabricTransportServiceRemotingClientFactory());
-            _productCatalogService = proxyFactory.CreateServiceProxy<IProductCatalogService>(new Uri("fabric:/EComm/EComm.ProductCatalog"), new ServicePartitionKey(1));
+            _productCatalogService = proxyFactory.CreateServiceProxy<IProductCatalogService>(new Uri("fabric:/EComm/EComm.ProductCatalog"), new ServicePartitionKey(new Random().Next(int.MaxValue)));
         }
 
-        // GET api/products
+        // GET api/product
         [HttpGet]
         public async Task<IEnumerable<ApiProduct>> Get()
         {
@@ -46,16 +46,16 @@ namespace EComm.API.Controllers
             }
         }
 
-        // GET api/products/5
+        // GET api/product/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get( int id )
         {
             return "value";
         }
 
-        // POST api/products
+        // POST api/product
         [HttpPost]
-        public async Task Post([FromBody] ApiProduct product)
+        public async Task Post( [FromBody] ApiProduct product )
         {
             Product newProduct = new Product()
             {
@@ -69,15 +69,15 @@ namespace EComm.API.Controllers
             await _productCatalogService.AddProduct(newProduct);
         }
 
-        // PUT api/products/5
+        // PUT api/product/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put( int id, [FromBody]string value )
         {
         }
 
-        // DELETE api/products/5
+        // DELETE api/product/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete( int id )
         {
         }
     }
